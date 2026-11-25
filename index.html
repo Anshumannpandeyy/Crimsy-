@@ -1453,14 +1453,11 @@ Main tere around ab khush rahta hu 🙂 and you make me smile everytime ... Aur 
     document.getElementById("toKittyBtn").addEventListener("click", () => goToScreen(7));
 
     // Scene 8: Kitty Video Link
-    const kittyLinkEl = document.getElementById("kittyExternalLink");
-    const kittyBackdropImg = document.getElementById("kittyBackdropImg");
-    kittyLinkEl.href = CONFIG.kittyVideoUrl;
-    kittyBackdropImg.src = resolvePhotoUrl(CONFIG.photos[0]).primary;
-    kittyBackdropImg.onerror = () => {
-      kittyBackdropImg.src = CONFIG.photos[0].fallback;
-    };
-
+        const kittyVideoFrame = document.getElementById("kittyVideoFrame");
+    if (kittyVideoFrame) {
+      kittyVideoFrame.src = CONFIG.kittyVideoUrl;
+    }
+    
     document.getElementById("skipKittyBtn").addEventListener("click", () => goToScreen(8));
     document.getElementById("toFinaleBtn").addEventListener("click", () => goToScreen(8));
 
