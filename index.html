@@ -370,8 +370,7 @@
       margin-top: 12px;
       font-weight: 600;
     }
-
-    /* Scene 4: Cake Scene */
+        /* Scene 4: Cake Scene */
     .scene-cake {
       background: radial-gradient(circle at 50% 30%, #3b1535 0%, #1c0a1b 70%, #110610 100%);
       text-align: center;
@@ -841,4 +840,789 @@
       border-radius: 24px;
       padding: 18px;
       margin: 14px 0;
-  
+    }
+
+    .kitty-poster {
+      position: relative;
+      width: 100%;
+      height: 250px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #4c1d95 0%, #be185d 55%, #f59e0b 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .kitty-poster img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.35;
+    }
+
+    .kitty-overlay-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .skip-link {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      text-decoration: underline;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Scene 9: Grand Finale */
+    .scene-finale {
+      background: radial-gradient(circle at 50% 35%, #4a154b 0%, #1d091c 68%, #0e040e 100%);
+      text-align: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .finale-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 800;
+      font-size: 38px;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .finale-name {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 40px;
+      color: var(--gold);
+      margin: 2px 0 10px;
+    }
+
+    .finale-kitty-badge {
+      width: 132px;
+      height: 132px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(251, 191, 36, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 6px auto 14px;
+      box-shadow: 0 14px 36px rgba(251, 191, 36, 0.22);
+    }
+  </style>
+</Head>
+  <body>
+  <div class="app-shell" id="appShell">
+    <canvas id="fxCanvas"></canvas>
+
+    <div class="top-bar">
+      <button class="top-btn" id="backBtn" type="button" aria-label="Go Back">
+        <span>&larr;</span>
+        <span>Back</span>
+      </button>
+      <button class="top-btn icon-circle" id="soundBtn" type="button" aria-label="Toggle Birthday Tune" title="Toggle Happy Birthday Tune">
+        🔊
+      </button>
+    </div>
+
+    <!-- 1. Bow & Arrow Pull -->
+    <section class="screen scene-bow active" id="screen-0">
+      <div style="text-align:center;">
+        <div class="bow-subtitle">a little something, for you</div>
+        <div class="heart-target-wrap">
+          <div class="heart-glow"></div>
+          <svg class="big-heart-svg" id="targetHeart" viewBox="0 0 120 120">
+            <defs>
+              <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff6b9d" />
+                <stop offset="100%" stop-color="#e11d48" />
+              </linearGradient>
+            </defs>
+            <path d="M60 104 C60 104 14 73 14 39 C14 23 26 12 41 12 C50 12 57 17 60 24 C63 17 70 12 79 12 C94 12 106 23 106 39 C106 73 60 104 60 104 Z" fill="url(#heartGrad)" />
+          </svg>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div class="bow-stage" id="bowStage">
+          <div class="bow-assembly" id="bowAssembly">
+            <svg width="150" height="150" viewBox="0 0 150 150">
+              <path d="M30 25 Q95 75 30 125" fill="none" stroke="#7c2d12" stroke-width="6" stroke-linecap="round" />
+              <line id="bowString" x1="30" y1="25" x2="30" y2="125" stroke="#be123c" stroke-width="2" />
+              <g id="arrowGroup">
+                <line x1="75" y1="138" x2="75" y2="42" stroke="#5c2d16" stroke-width="3.5" stroke-linecap="round" />
+                <polygon points="75,30 68,46 82,46" fill="#e11d48" />
+                <polygon points="75,138 69,126 75,130 81,126" fill="#fb7185" />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div class="pull-hint" id="pullHintText">PULL &amp; RELEASE</div>
+        <div class="pull-knob"></div>
+      </div>
+    </section>
+
+    <!-- 2. Happy Birthday Card -->
+    <section class="screen scene-bday-card" id="screen-1">
+      <div class="grid-bg"></div>
+      <div class="card-kicker">make a wish...</div>
+      <div class="card-hero-title">Happy<br>Birthday</div>
+      <svg class="scribble-line" viewBox="0 0 180 20">
+        <path d="M8 12 Q45 3 90 11 T172 9" fill="none" stroke="#fde047" stroke-width="3" stroke-linecap="round" />
+      </svg>
+      <div class="card-sub">to someone worth celebrating</div>
+      <div class="tap-pill">tap anywhere to continue ✨</div>
+    </section>
+
+    <!-- 3. Heart Balloon Tree for Shubhi -->
+    <section class="screen scene-tree" id="screen-2">
+      <div class="tree-canvas-box">
+        <svg class="tree-svg" viewBox="0 0 320 300">
+          <!-- Trunk & Branches -->
+          <path d="M160 295 L160 155 M160 205 L112 162 M160 192 L210 152 M160 170 L132 126 M160 165 L192 122"
+                stroke="#4a2518" stroke-width="8" stroke-linecap="round" fill="none" />
+          <!-- Heart-shaped Balloon Canopy -->
+          <g id="balloonCanopy"></g>
+        </svg>
+      </div>
+
+      <div class="tree-caption-card">
+        <div class="tree-kicker">it's officially your day</div>
+        <div class="tree-name-title" id="treeNameHeading">Happy Birthday, Shubhi</div>
+        <p class="tree-sub" id="treeSubText">and just like that, you're turning 19 ✨</p>
+        <div class="continue-subtle">tap anywhere to continue</div>
+      </div>
+    </section>
+
+    <!-- 4. Cake Scene -->
+    <section class="screen scene-cake" id="screen-3">
+      <h2 class="cake-heading">First things first 🎂</h2>
+      <p class="cake-sub">Baking something sweet...</p>
+
+      <div class="cake-visual">
+        <div class="candle">
+          <div class="flame"></div>
+        </div>
+        <div class="cake-layer-top"></div>
+        <div class="cake-layer-mid"></div>
+        <div class="cake-layer-bot"></div>
+        <div class="cake-plate"></div>
+      </div>
+
+      <div class="cake-wish-banner" id="cakeWishText">Happy Birthday, Shubhi! 🎉</div>
+      <div class="tap-pill" style="margin-top:18px;">tap anywhere to continue</div>
+    </section>
+        <!-- 5. Pop the Balloons -->
+    <section class="screen scene-balloons" id="screen-4">
+      <h2 class="section-title">Pop the balloons 🎈</h2>
+      <p class="section-sub" id="balloonCounterText">5 balloons. Each one holds a reason you're loved. Pop them all</p>
+
+      <div class="balloon-field" id="balloonField"></div>
+
+      <div class="reasons-list" id="reasonsList"></div>
+
+      <div class="thousand-note">...and a thousand more reasons 💛</div>
+      <button class="primary-btn" id="toMemoriesBtn" type="button">Keep going ✨</button>
+    </section>
+
+    <!-- 6. Walk Down Memory Lane -->
+    <section class="screen scene-memories" id="screen-5">
+      <div>
+        <h2 class="section-title">A walk down memory lane</h2>
+        <p class="section-sub">swipe through 📸</p>
+      </div>
+
+      <div class="deck-stage" id="deckStage"></div>
+
+      <div style="width:100%;">
+        <div class="dots-row" id="memoryDots"></div>
+        <button class="primary-btn" id="toLetterBtn" type="button">Keep going ✨</button>
+      </div>
+    </section>
+
+    <!-- 7. Letter Section -->
+    <section class="screen scene-letter" id="screen-6">
+      <div id="letterIntroHeader" style="text-align:center;">
+        <h2 class="section-title" id="letterTitle">One last thing, Shubhi...</h2>
+        <p class="section-sub" id="letterSubtitle">Anshuman wrote you a letter.</p>
+      </div>
+
+      <div class="envelope-box" id="envelopeBox">
+        <div class="wax-seal">S</div>
+        <span style="font-size:12px;font-weight:700;letter-spacing:0.08em;color:#fffbeb;">Tap to open your letter 💌</span>
+      </div>
+
+      <div class="letter-sheet" id="letterSheet">
+        <div class="letter-salutation" id="letterSalutation">Dear Shubhi,</div>
+        <div class="letter-body" id="letterTypewriter"></div>
+        <div class="letter-sign" id="letterSign">With all my love,<br>- Anshuman</div>
+        <button class="primary-btn" id="toKittyBtn" type="button" style="margin-top:20px;">Continue 🐾</button>
+      </div>
+    </section>
+
+    <!-- 8. Kitty Video Surprise -->
+    <section class="screen scene-kitty" id="screen-7">
+      <div>
+        <h2 class="section-title">Special Kitty Surprise 🐱</h2>
+        <p class="section-sub">Little kitties brought a celebration for you!</p>
+      </div>
+
+      <div class="kitty-card">
+        <div class="kitty-poster">
+          <img id="kittyBackdropImg" src="" alt="Birthday kitties" />
+          <div class="kitty-overlay-content">
+            <div style="font-size:44px;margin-bottom:8px;">🎂🐱🎉</div>
+            <div style="font-weight:800;font-size:18px;margin-bottom:6px;">Kitty Birthday Video</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.88);max-width:250px;margin:0 auto;">
+              Tap below to open your kitty celebration video in a new tab.
+            </div>
+          </div>
+        </div>
+
+        <a class="primary-btn" id="kittyExternalLink" href="#" target="_blank" rel="noopener noreferrer" style="margin-top:16px;">
+          ▶ Watch Kitty Video
+        </a>
+        <button class="skip-link" id="skipKittyBtn" type="button">Skip &rarr;</button>
+      </div>
+
+      <button class="primary-btn" id="toFinaleBtn" type="button">Final Wish ✨</button>
+    </section>
+
+    <!-- 9. Finale -->
+    <section class="screen scene-finale" id="screen-8">
+      <div class="finale-kitty-badge">
+        <span style="font-size:52px;">🐱</span>
+        <span style="font-size:11px;font-weight:700;color:#fde047;margin-top:4px;">🌷 &amp; 🎂</span>
+      </div>
+      <h1 class="finale-title">HAPPY<br>BIRTHDAY</h1>
+      <div class="finale-name" id="finaleName">Shubhi!</div>
+      <p style="font-size:14px;color:var(--text-muted);max-width:280px;margin:0 0 14px;">
+        Wishing you endless smiles, warm moments, and everything your heart hopes for.
+      </p>
+      <button class="top-btn" id="replayBtn" type="button" style="padding:11px 20px;font-size:13px;">
+        ↻ Replay Surprise
+      </button>
+    </section>
+  </div>
+
+  <script>
+    const CONFIG = {
+      recipientName: "Shubhi",
+      senderName: "Anshuman",
+      ageText: "and just like that, you're turning 19 ✨",
+      reasons: [
+        { label: "REASON NO.1 💘", text: "The best person I ever meet" },
+        { label: "REASON NO.2 💘", text: "I'm so grateful to have uhhh" },
+        { label: "REASON NO.3 💘", text: "Nobody listens like you" },
+        { label: "REASON NO.4 💘", text: "You remember the little things I forget" },
+        { label: "REASON NO.5 💘", text: "You make me happy in every situation" }
+      ],
+      photos: [
+        {
+          url: "https://ibb.co/HLnr3gPw",
+          fallback: "https://images.unsplash.com/photo-1513151233558-d860c5398176?w=700&q=80",
+          caption: "Memory 1 ✨"
+        },
+        {
+          url: "https://ibb.co/nqvhcP6R",
+          fallback: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=700&q=80",
+          caption: "Memory 2 💕"
+        },
+        {
+          url: "https://ibb.co/dwbkr62X",
+          fallback: "https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=700&q=80",
+          caption: "Memory 3 🌸"
+        },
+        {
+          url: "https://ibb.co/GffTJG9m",
+          fallback: "https://images.unsplash.com/photo-1527529482837-4698179dc6ce?w=700&q=80",
+          caption: "Memory 4 🌷"
+        },
+        {
+          url: "https://ibb.co/0jjFB2j2",
+          fallback: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=700&q=80",
+          caption: "Memory 5 🎉"
+        }
+      ],
+      kittyVideoUrl: "https://screenapp.io/app/share/8fX7g7_E0863JmzaUIusGfB_",
+      letterBody: `Dear shubhi..
+Yrr pahle ka pta nhi. Lekin ab you are the best person I ever meet . ❤️
+Main tere around ab khush rahta hu 🙂 and you make me smile everytime ... Aur yrr wo teri kuch cheeze hai na .. Uspe to main mar hi jaawaan .. Mumma papa .. like share .. tu padh le. Laddu leke jaaungi 🤭💕Yrr ye sub bahot pyara hai .. aur isse pyari tu hai .. tujhe koi idea nhi hai . you have no idea how important you are to me. 💌I genuinely care for you . and love you . and again happiiiee birthday 🎂🥰❤️`
+    };
+        // Helper: Convert ibb.co page link if needed or attach clean load handler
+    function resolvePhotoUrl(entry) {
+      return { primary: entry.url, fallback: entry.fallback };
+    }
+
+    // Navigation state
+    const totalScreens = 9;
+    let currentScreen = 0;
+    const screens = Array.from(document.querySelectorAll(".screen"));
+    const backBtn = document.getElementById("backBtn");
+    const soundBtn = document.getElementById("soundBtn");
+
+    function goToScreen(index) {
+      if (index < 0 || index >= totalScreens) return;
+      screens[currentScreen].classList.remove("active");
+      currentScreen = index;
+      screens[currentScreen].classList.add("active");
+      backBtn.style.visibility = currentScreen === 0 ? "hidden" : "visible";
+
+      if (currentScreen === 2) {
+        buildHeartTree();
+        spawnHearts(18);
+      } else if (currentScreen === 3) {
+        spawnConfetti(55);
+      } else if (currentScreen === 5) {
+        renderMemoryDeck();
+      } else if (currentScreen === 8) {
+        spawnConfetti(90);
+      }
+    }
+
+    backBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (currentScreen > 0) goToScreen(currentScreen - 1);
+    });
+
+    // Click-to-continue scenes (2, 3, 4)
+    document.getElementById("screen-1").addEventListener("click", () => goToScreen(2));
+    document.getElementById("screen-2").addEventListener("click", () => goToScreen(3));
+    document.getElementById("screen-3").addEventListener("click", () => goToScreen(4));
+
+    // Scene 1: Bow & Arrow Drag-to-Pull
+    const bowStage = document.getElementById("bowStage");
+    const bowAssembly = document.getElementById("bowAssembly");
+    const bowString = document.getElementById("bowString");
+    const arrowGroup = document.getElementById("arrowGroup");
+    const targetHeart = document.getElementById("targetHeart");
+    const pullHintText = document.getElementById("pullHintText");
+
+    let isPulling = false;
+    let startY = 0;
+    let pullDistance = 0;
+
+    function updateBowPull(dy) {
+      pullDistance = Math.max(0, Math.min(72, dy));
+      arrowGroup.setAttribute("transform", `translate(0, ${pullDistance * 0.55})`);
+      bowString.setAttribute("points", `30,25 ${30 - pullDistance * 0.18},${75 + pullDistance * 0.25} 30,125`);
+      const scale = 1 + (pullDistance / 72) * 0.14;
+      targetHeart.style.transform = `scale(${scale.toFixed(3)})`;
+      pullHintText.textContent = pullDistance > 26 ? "RELEASE TO SHOOT!" : "PULL & RELEASE";
+    }
+
+    function resetBowPull() {
+      isPulling = false;
+      pullDistance = 0;
+      arrowGroup.setAttribute("transform", "translate(0, 0)");
+      bowString.setAttribute("points", "30,25 30,75 30,125");
+      targetHeart.style.transform = "scale(1)";
+      pullHintText.textContent = "PULL & RELEASE";
+    }
+
+    bowStage.addEventListener("pointerdown", (e) => {
+      isPulling = true;
+      startY = e.clientY;
+      bowStage.setPointerCapture(e.pointerId);
+    });
+
+    bowStage.addEventListener("pointermove", (e) => {
+      if (!isPulling) return;
+      updateBowPull(e.clientY - startY);
+    });
+
+    bowStage.addEventListener("pointerup", () => {
+      if (!isPulling) return;
+      const shouldShoot = pullDistance >= 24;
+      resetBowPull();
+      if (shouldShoot) {
+        targetHeart.style.transform = "scale(1.25)";
+        spawnHearts(20);
+        setTimeout(() => goToScreen(1), 380);
+      }
+    });
+
+    // Scene 3: Balloon Heart Canopy
+    function buildHeartTree() {
+      const canopy = document.getElementById("balloonCanopy");
+      canopy.innerHTML = "";
+      const colors = ["#fb7185", "#f472b6", "#fbbf24", "#fda4af", "#e11d48", "#f9a8d4"];
+      const total = 44;
+
+      for (let i = 0; i < total; i++) {
+        const t = (i / total) * Math.PI * 2;
+        const hx = 16 * Math.pow(Math.sin(t), 3);
+        const hy = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        const ringScale = i % 3 === 0 ? 0.62 : 1;
+        const cx = 160 + hx * 6.8 * ringScale;
+        const cy = 112 + hy * 6.6 * ringScale;
+        const color = colors[i % colors.length];
+
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", cx.toFixed(1));
+        circle.setAttribute("cy", cy.toFixed(1));
+        circle.setAttribute("r", "12");
+        circle.setAttribute("fill", color);
+        circle.setAttribute("opacity", "0.94");
+        canopy.appendChild(circle);
+      }
+    }
+
+    // Scene 5: Pop the Balloons
+    const balloonField = document.getElementById("balloonField");
+    const reasonsList = document.getElementById("reasonsList");
+    const balloonCounterText = document.getElementById("balloonCounterText");
+    const balloonColors = ["#f472b6", "#fbbf24", "#c084fc", "#2dd4bf", "#fb7185"];
+    let poppedCount = 0;
+
+    function initBalloons() {
+      balloonField.innerHTML = "";
+      reasonsList.innerHTML = "";
+      poppedCount = 0;
+      balloonCounterText.textContent = `${CONFIG.reasons.length} balloons. Each one holds a reason you're loved. Pop them all`;
+
+      CONFIG.reasons.forEach((reason, idx) => {
+        const item = document.createElement("div");
+        item.className = "balloon-item";
+    
+     const shape = document.createElement("div");
+        shape.className = "balloon-shape";
+        shape.style.background = balloonColors[idx % balloonColors.length];
+
+        const str = document.createElement("div");
+        str.className = "balloon-string";
+
+        item.appendChild(shape);
+        item.appendChild(str);
+
+        item.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (item.classList.contains("popped")) return;
+          item.classList.add("popped");
+          poppedCount++;
+          spawnConfetti(16);
+
+          const card = document.createElement("div");
+          card.className = "reason-card";
+          card.innerHTML = `<span class="reason-badge">${reason.label}</span><div class="reason-text">${reason.text}</div>`;
+          reasonsList.appendChild(card);
+
+          const remaining = CONFIG.reasons.length - poppedCount;
+          if (remaining > 0) {
+            balloonCounterText.textContent = `${remaining} balloon${remaining > 1 ? "s" : ""} left — tap to pop!`;
+          } else {
+            balloonCounterText.textContent = `All ${CONFIG.reasons.length} reasons unlocked! 💖`;
+          }
+        });
+
+        balloonField.appendChild(item);
+      });
+    }
+
+    document.getElementById("toMemoriesBtn").addEventListener("click", () => goToScreen(5));
+
+    // Scene 6: Memory Lane Swipe Deck
+    const deckStage = document.getElementById("deckStage");
+    const memoryDots = document.getElementById("memoryDots");
+    let activeCardIdx = 0;
+
+    function renderMemoryDeck() {
+      deckStage.innerHTML = "";
+      memoryDots.innerHTML = "";
+
+      CONFIG.photos.forEach((photo, idx) => {
+        const dot = document.createElement("div");
+        dot.className = "dot" + (idx === activeCardIdx ? " active" : "");
+        memoryDots.appendChild(dot);
+      });
+
+      const n = CONFIG.photos.length;
+      for (let offset = n - 1; offset >= 0; offset--) {
+        const idx = (activeCardIdx + offset) % n;
+        const photo = CONFIG.photos[idx];
+        const resolved = resolvePhotoUrl(photo);
+
+        const card = document.createElement("div");
+        card.className = "polaroid";
+
+        const tilt = offset === 0 ? 0 : (offset % 2 === 0 ? 4 : -4) * offset;
+        const xShift = offset * 14;
+        const scale = 1 - offset * 0.045;
+        const opacity = offset > 3 ? 0 : 1 - offset * 0.14;
+
+        card.style.zIndex = String(20 - offset);
+        card.style.opacity = String(opacity);
+        card.style.transform = `translateX(${xShift}px) rotate(${tilt}deg) scale(${scale})`;
+
+        card.innerHTML = `
+          <div class="polaroid-tape"></div>
+          <div class="polaroid-img-box">
+            <img src="${resolved.primary}" alt="${photo.caption}" loading="lazy" />
+          </div>
+          <div class="polaroid-footer">${photo.caption}</div>
+        `;
+
+        const imgEl = card.querySelector("img");
+        imgEl.addEventListener("error", () => {
+          if (imgEl.dataset.fallbackApplied) return;
+          imgEl.dataset.fallbackApplied = "1";
+          imgEl.src = resolved.fallback;
+        });
+
+        if (offset === 0) {
+          let dragStartX = 0;
+          let currentDx = 0;
+          let dragging = false;
+
+          card.addEventListener("pointerdown", (e) => {
+            dragging = true;
+            dragStartX = e.clientX;
+            card.setPointerCapture(e.pointerId);
+          });
+
+          card.addEventListener("pointermove", (e) => {
+            if (!dragging) return;
+            currentDx = e.clientX - dragStartX;
+            card.style.transform = `translateX(${currentDx}px) rotate(${currentDx * 0.08}deg)`;
+          });
+
+          card.addEventListener("pointerup", () => {
+            if (!dragging) return;
+            dragging = false;
+            if (Math.abs(currentDx) > 65) {
+              const dir = currentDx > 0 ? 1 : -1;
+              card.style.transform = `translateX(${dir * 340}px) rotate(${dir * 22}deg)`;
+              card.style.opacity = "0";
+              setTimeout(() => {
+                activeCardIdx = (activeCardIdx + 1) % n;
+                renderMemoryDeck();
+              }, 220);
+            } else {
+              card.style.transform = `translateX(0px) rotate(0deg) scale(1)`;
+            }
+            currentDx = 0;
+          });
+        }
+
+        deckStage.appendChild(card);
+      }
+    }
+
+    document.getElementById("toLetterBtn").addEventListener("click", () => goToScreen(6));
+
+    // Scene 7: Letter Typewriter
+    const envelopeBox = document.getElementById("envelopeBox");
+    const letterSheet = document.getElementById("letterSheet");
+    const letterTypewriter = document.getElementById("letterTypewriter");
+    let typeTimer = null;
+    let letterOpenedOnce = false;
+
+    envelopeBox.addEventListener("click", () => {
+      envelopeBox.style.display = "none";
+      letterSheet.classList.add("open");
+      if (letterOpenedOnce) return;
+      letterOpenedOnce = true;
+
+      letterTypewriter.textContent = "";
+      let i = 0;
+      clearInterval(typeTimer);
+      typeTimer = setInterval(() => {
+        letterTypewriter.textContent += CONFIG.letterBody.charAt(i);
+        i++;
+        if (i >= CONFIG.letterBody.length) {
+          clearInterval(typeTimer);
+        }
+      }, 24);
+    });
+
+    document.getElementById("toKittyBtn").addEventListener("click", () => goToScreen(7));
+
+    // Scene 8: Kitty Video Link
+    const kittyLinkEl = document.getElementById("kittyExternalLink");
+    const kittyBackdropImg = document.getElementById("kittyBackdropImg");
+    kittyLinkEl.href = CONFIG.kittyVideoUrl;
+    kittyBackdropImg.src = resolvePhotoUrl(CONFIG.photos[0]).primary;
+    kittyBackdropImg.onerror = () => {
+      kittyBackdropImg.src = CONFIG.photos[0].fallback;
+    };
+
+    document.getElementById("skipKittyBtn").addEventListener("click", () => goToScreen(8));
+    document.getElementById("toFinaleBtn").addEventListener("click", () => goToScreen(8));
+
+    // Scene 9: Replay
+    document.getElementById("replayBtn").addEventListener("click", () => {
+      initBalloons();
+      activeCardIdx = 0;
+      letterOpenedOnce = false;
+      envelopeBox.style.display = "flex";
+      letterSheet.classList.remove("open");
+      goToScreen(0);
+    });
+
+    // Apply personalized names
+    document.getElementById("treeNameHeading").textContent = `Happy Birthday, ${CONFIG.recipientName}`;
+    document.getElementById("treeSubText").textContent = CONFIG.ageText;
+    document.getElementById("cakeWishText").textContent = `Happy Birthday, ${CONFIG.recipientName}! 🎉`;
+    document.getElementById("letterTitle").textContent = `One last thing, ${CONFIG.recipientName}...`;
+    document.getElementById("letterSubtitle").textContent = `${CONFIG.senderName} wrote you a letter.`;
+    document.getElementById("letterSalutation").textContent = `Dear ${CONFIG.recipientName},`;
+    document.getElementById("letterSign").innerHTML = `With all my love,<br>- ${CONFIG.senderName}`;
+    document.getElementById("finaleName").textContent = `${CONFIG.recipientName}!`;
+
+    // Happy Birthday Web Audio Tune
+    let audioCtx = null;
+    let musicPlaying = false;
+    let tuneTimeout = null;
+
+    const melodyNotes = [
+      { f: 261.63, d: 0.35 }, { f: 261.63, d: 0.25 }, { f: 293.66, d: 0.6 }, { f: 261.63, d: 0.6 }, { f: 349.23, d: 0.6 }, { f: 329.63, d: 1.0 },
+      { f: 261.63, d: 0.35 }, { f: 261.63, d: 0.25 }, { f: 293.66, d: 0.6 }, { f: 261.63, d: 0.6 }, { f: 392.00, d: 0.6 }, { f: 349.23, d: 1.0 },
+      { f: 261.63, d: 0.35 }, { f: 261.63, d: 0.25 }, { f: 523.25, d: 0.6 }, { f: 440.00, d: 0.6 }, { f: 349.23, d: 0.6 }, { f: 329.63, d: 0.6 }, { f: 293.66, d: 1.0 },
+      { f: 466.16, d: 0.35 }, { f: 466.16, d: 0.25 }, { f: 440.00, d: 0.6 }, { f: 349.23, d: 0.6 }, { f: 392.00, d: 0.6 }, { f: 349.23, d: 1.2 }
+    ];
+
+    function playMelodyLoop() {
+      if (!musicPlaying || !audioCtx) return;
+      let timeOffset = audioCtx.currentTime;
+
+      melodyNotes.forEach((n) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(n.f, timeOffset);
+
+        gain.gain.setValueAtTime(0.001, timeOffset);
+        gain.gain.exponentialRampToValueAtTime(0.08, timeOffset + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.001, timeOffset + n.d * 0.92);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(timeOffset);
+        osc.stop(timeOffset + n.d);
+        timeOffset += n.d;
+      });
+
+      const totalMs = melodyNotes.reduce((acc, n) => acc + n.d * 1000, 0) + 700;
+      tuneTimeout = setTimeout(playMelodyLoop, totalMs);
+    }
+
+    soundBtn.addEventListener("click", () => {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) audioCtx = new AudioContextClass();
+      }
+      if (audioCtx && audioCtx.state === "suspended") {
+        audioCtx.resume();
+      }
+      musicPlaying = !musicPlaying;
+      soundBtn.textContent = musicPlaying ? "🔊" : "🔇";
+      if (musicPlaying) {
+        playMelodyLoop();
+      } else {
+        clearTimeout(tuneTimeout);
+      }
+    });
+
+    // Particle / Confetti Engine
+    const canvas = document.getElementById("fxCanvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+
+    function resizeCanvas() {
+      const shell = document.getElementById("appShell");
+      canvas.width = shell.clientWidth;
+      canvas.height = shell.clientHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function spawnConfetti(count) {
+      const palette = ["#ff4d8d", "#fbbf24", "#38bdf8", "#a855f7", "#34d399", "#ffffff"];
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          kind: "confetti",
+          x: Math.random() * canvas.width,
+          y: -15 - Math.random() * 60,
+          w: 6 + Math.random() * 6,
+          h: 4 + Math.random() * 5,
+          vx: (Math.random() - 0.5) * 3.2,
+          vy: 2.2 + Math.random() * 3.8,
+          rot: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.18,
+          color: palette[i % palette.length],
+          alpha: 1
+        });
+      }
+    }
+
+    function spawnHearts(count) {
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          kind: "heart",
+          x: Math.random() * canvas.width,
+          y: canvas.height + 20 + Math.random() * 40,
+          size: 10 + Math.random() * 10,
+          vx: (Math.random() - 0.5) * 1.4,
+          vy: -(1.6 + Math.random() * 2.4),
+          color: i % 2 === 0 ? "#ff4d8d" : "#fb7185",
+          alpha: 0.95
+        });
+      }
+    }
+
+    function drawHeart(x, y, s, color, alpha) {
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, alpha);
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(x, y + s * 0.3);
+      ctx.bezierCurveTo(x, y, x - s * 0.5, y, x - s * 0.5, y + s * 0.3);
+      ctx.bezierCurveTo(x - s * 0.5, y + s * 0.65, x, y + s * 0.9, x, y + s);
+      ctx.bezierCurveTo(x, y + s * 0.9, x + s * 0.5, y + s * 0.65, x + s * 0.5, y + s * 0.3);
+      ctx.bezierCurveTo(x + s * 0.5, y, x, y, x, y + s * 0.3);
+      ctx.fill();
+      ctx.restore();
+      }
+
+    function animateFx() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles = particles.filter((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.kind === "confetti") {
+          p.rot += p.vRot;
+          if (p.y > canvas.height - 80) p.alpha -= 0.025;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.alpha);
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+          return p.y < canvas.height + 25 && p.alpha > 0;
+        } else {
+          p.alpha -= 0.005;
+          drawHeart(p.x, p.y, p.size, p.color, p.alpha);
+          return p.y > -30 && p.alpha > 0;
+        }
+      });
+      requestAnimationFrame(animateFx);
+    }
+
+    // Initialize
+    initBalloons();
+    backBtn.style.visibility = "hidden";
+    animateFx();
+  </script>
+</body>
+</html>
+    
